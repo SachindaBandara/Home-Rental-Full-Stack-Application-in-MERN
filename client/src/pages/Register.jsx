@@ -11,18 +11,8 @@ const Register = () => {
             name="firstname"
             required
           />
-          <input 
-            type="text" 
-            placeholder="Last Name" 
-            name="lastname" 
-            required 
-          />
-          <input 
-            type="email" 
-            placeholder="Email" 
-            name="email" 
-            required 
-          />
+          <input type="text" placeholder="Last Name" name="lastname" required />
+          <input type="email" placeholder="Email" name="email" required />
           <input
             type="password"
             placeholder="Password"
@@ -36,12 +26,22 @@ const Register = () => {
             required
           />
 
-          <input 
-            type="file" 
-            name="profileimage" 
-            accept="image/*" 
-            style={{display:'none'}}
-            required />
+          <input
+            id="image"
+            type="file"
+            name="profileimage"
+            accept="image/*"
+            style={{ display: "none" }}
+            required
+          />
+
+          <label htmlFor="image">
+            <img src="/assets/addImage" alt="Add Profile Photo" />
+            <p>Upload Your Photo</p>
+          </label>
+
+          <button type="submit">Register</button>
+
         </form>
         <p>
           Already have an account? <a href="/login">Login here</a>

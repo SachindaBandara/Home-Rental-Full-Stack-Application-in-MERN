@@ -31,6 +31,7 @@ const Register = () => {
             placeholder="First Name"
             name="firstName"
             value={formData.firstName}
+            onChange={handleChange}
             required
           />
 
@@ -39,6 +40,7 @@ const Register = () => {
             placeholder="Last Name" 
             name="lastName" 
             value={formData.lastName}
+            onChange={handleChange}
             required 
           />
 
@@ -47,6 +49,7 @@ const Register = () => {
             placeholder="Email" 
             name="email" 
             value={formData.email}
+            onChange={handleChange}
             required 
           />
           <input
@@ -54,6 +57,7 @@ const Register = () => {
             placeholder="Password"
             name="password"
             value={formData.password}
+            onChange={handleChange}
             required
           />
           <input
@@ -61,6 +65,7 @@ const Register = () => {
             placeholder="Confirm Password"
             name="confirmPassword"
             value={formData.confirmPassword}
+            onChange={handleChange}
             required
           />
 
@@ -70,7 +75,7 @@ const Register = () => {
             name="profileImage"
             accept="image/*"
             style={{ display: "none" }}
-            value={formData.profileImage}
+            onChange={handleChange}
             required
           />
 
@@ -78,6 +83,13 @@ const Register = () => {
             <img src="../../public/assets/addImage.png" alt="Add Profile Photo" />
             <p>Upload Your Photo</p>
           </label>
+
+          {formData.profileImage && (
+            <img src = {URL.createObjectURL(formData.profileImage)} 
+            alt="profile photo"
+            style={{maxWidth: "80px"}}
+            />
+          )}
 
           <button type="submit">Register</button>
 

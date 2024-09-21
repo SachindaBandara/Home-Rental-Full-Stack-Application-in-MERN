@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Register.scss";
 
@@ -21,27 +21,24 @@ const Register = () => {
     });
   };
 
-  console.log(formData)
+  console.log(formData);
 
   const [passwordMatch, setPasswordMatch] = useState(true);
+
+  useEffect ( () => {
+    setPasswordMatch(formData.password === formData.confirmPassword || formData.confirmPassword === "")
+  })
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.password === formData.confirmPassword) {
-      setPasswordMatch(true);
-    } else {
-      setPasswordMatch(false);
-    }
+    try {
+      const register_form = new FormData();
 
-    try{
-
-      const register_form = new FormData()
-
-      for (var key in formData){
-        register_form.append(key, formData[key])
+      for (var key in formData) {
+        register_form.append(key, formData[key]);
       }
 
       const response = await fetch("http://localhost:3001/auth/register", {
@@ -49,19 +46,18 @@ const Register = () => {
         body: register_form,
       });
 
-      if(response.ok){
-        navigate("/login")
+      if (response.ok) {
+        navigate("/login");
       }
-
-    }catch(error){
-console.log("Registration failed", error.message)
+    } catch (error) {
+      console.log("Registration failed", error.message);
     }
   };
 
   return (
     <div className="register">
       <div className="register_content">
-        <form action="" className="register_content_form">
+        <form action="" className="register_content_form" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="First Name"
@@ -96,6 +92,12 @@ console.log("Registration failed", error.message)
             onChange={handleChange}
             required
           />
+
+          {!passwordMatch && (
+            <p style={{color: "red"}}>Passwords are not matched!</p>
+          )}
+
+
           <input
             type="password"
             placeholder="Confirm Password"
@@ -131,7 +133,7 @@ console.log("Registration failed", error.message)
             />
           )}
 
-          <button type="submit">Register</button>
+          <button type="submit" disabled = {!passwordMatch}>Register</button>
         </form>
         <a>
           Already have an account? <a href="/login">Login here</a>

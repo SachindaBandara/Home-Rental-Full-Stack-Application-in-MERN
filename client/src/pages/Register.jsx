@@ -40,7 +40,7 @@ const RegisterPage = () => {
 
       const response = await fetch("http://localhost:3001/auth/register", {
         method: "POST",
-        body: register_form,
+        body: register_form
       });
 
       if (response.ok) {

@@ -11,12 +11,11 @@ dotenv.config();
 const authRoutes = require("./routes/Auth");
 
 // Apply CORS middleware
-app.use(cors());  // Ensure CORS is applied before routes
+app.use(cors());
 
 // Middleware for parsing JSON and serving static files
 app.use(express.json());
-app.use(express.static("public"));  // Static files should be served from the correct path
-
+app.use(express.static("public"));
 // Routes
 app.use("/auth", authRoutes);
 

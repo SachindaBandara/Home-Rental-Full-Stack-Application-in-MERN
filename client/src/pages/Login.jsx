@@ -1,46 +1,60 @@
 import React, { useState } from "react";
-import '../styles/Login.scss'
+import "../styles/Login.scss";
+import { setLogin } from "../redux/state";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    try{
-      const response = await fetch ("http://localhost:3001/auth/login", {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:3001/auth/login", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password})
-      })
+        body: JSON.stringify({ email, password }),
+      });
 
       // Get data after fetching
-      const loggedIn = await response.json()
-      
-    } catch(err){
+      const loggedIn = await response.json();
+      if (loggedIn) {
+        dispatch(
+          setLogin({
+            user: loggedIn.user,
+            token: loggedIn.token,
+          })
+        );
 
-    }
-  }
+        navigate("/");
+        console.log("Login Failed", err.message);
+      }
+    } catch (err) {}
+  };
 
   return (
     <div className="login">
       <div className="login_content">
-        <form className="login_content_form">
-          <input 
-            type="email" 
+        <form className="login_content_form" onSubmit={handleSubmit}>
+          <input
+            type="email"
             placeholder="Email"
-            value={email} 
-            onChange={ (e)=> e.target.value} 
-            required 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={ (e)=> e.target.value}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
           <button type="submit">Login</button>

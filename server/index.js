@@ -1,27 +1,36 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const dotenv = require("dotenv").config();
+const dotenv = require("dotenv");
 const cors = require("cors");
 
-const authRoutes = require("./routes/Auth")
+// Load environment variables
+dotenv.config();
 
-app.use(cors());
+// Import routes
+const authRoutes = require("./routes/Auth");
+
+// Apply CORS middleware
+app.use(cors());  // Ensure CORS is applied before routes
+
+// Middleware for parsing JSON and serving static files
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static("public"));  // Static files should be served from the correct path
 
-// ROUTES
-app.use("/auth", authRoutes)
+// Routes
+app.use("/auth", authRoutes);
 
-// mongoose setup
-const PORT = 3001;
+// Mongoose setup
+const PORT = process.env.PORT || 3001;
 mongoose
   .connect(process.env.MONGO_URL, {
+    dbName: "Home_Rental",
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-
   .then(() => {
-    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
-  .catch((error) => console.log(`${error} did not connect`));
+  .catch((error) => {
+    console.error("MongoDB connection error:", error.message);
+  });

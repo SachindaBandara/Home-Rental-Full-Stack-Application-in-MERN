@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Register.scss";
 
-const Register = () => {
+const RegisterPage = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -14,20 +14,17 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
+    setFormData((prevState) => ({
+      ...prevState,
       [name]: name === "profileImage" ? files[0] : value,
-    });
+    }));
   };
-
-  console.log(formData);
 
   const [passwordMatch, setPasswordMatch] = useState(true);
 
-  useEffect ( () => {
-    setPasswordMatch(formData.password === formData.confirmPassword || formData.confirmPassword === "")
-  })
+  useEffect(() => {
+    setPasswordMatch(formData.password === formData.confirmPassword || formData.confirmPassword === "");
+  }, [formData.password, formData.confirmPassword]);
 
   const navigate = useNavigate();
 
@@ -37,7 +34,7 @@ const Register = () => {
     try {
       const register_form = new FormData();
 
-      for (var key in formData) {
+      for (const key in formData) {
         register_form.append(key, formData[key]);
       }
 
@@ -48,64 +45,60 @@ const Register = () => {
 
       if (response.ok) {
         navigate("/login");
+      } else {
+        console.error("Registration failed", await response.text());
       }
-    } catch (error) {
-      console.log("Registration failed", error.message);
+    } catch (err) {
+      console.log("Registration failed", err.message);
     }
   };
 
   return (
     <div className="register">
       <div className="register_content">
-        <form action="" className="register_content_form" onSubmit={handleSubmit}>
+        <form className="register_content_form" onSubmit={handleSubmit}>
           <input
-            type="text"
             placeholder="First Name"
             name="firstName"
             value={formData.firstName}
             onChange={handleChange}
             required
           />
-
           <input
-            type="text"
             placeholder="Last Name"
             name="lastName"
             value={formData.lastName}
             onChange={handleChange}
             required
           />
-
           <input
-            type="email"
             placeholder="Email"
             name="email"
+            type="email"
             value={formData.email}
             onChange={handleChange}
             required
           />
           <input
-            type="password"
             placeholder="Password"
             name="password"
             value={formData.password}
             onChange={handleChange}
+            type="password"
             required
           />
-
-          {!passwordMatch && (
-            <p style={{color: "red"}}>Passwords are not matched!</p>
-          )}
-
-
           <input
-            type="password"
             placeholder="Confirm Password"
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
+            type="password"
             required
           />
+
+          {!passwordMatch && (
+            <p style={{ color: "red" }}>Passwords do not match!</p>
+          )}
 
           <input
             id="image"
@@ -116,31 +109,24 @@ const Register = () => {
             onChange={handleChange}
             required
           />
-
           <label htmlFor="image">
-            <img
-              src="../../public/assets/addImage.png"
-              alt="Add Profile Photo"
-            />
+            <img src="/assets/addImage.png" alt="Add Profile Photo" />
             <p>Upload Your Photo</p>
           </label>
 
           {formData.profileImage && (
             <img
               src={URL.createObjectURL(formData.profileImage)}
-              alt="profile photo"
+              alt="Profile Photo"
               style={{ maxWidth: "80px" }}
             />
           )}
-
-          <button type="submit" disabled = {!passwordMatch}>Register</button>
+          <button type="submit" disabled={!passwordMatch}>REGISTER</button>
         </form>
-        <a>
-          Already have an account? <a href="/login">Login here</a>
-        </a>
+        <a href="/login">Already have an account? Log In Here</a>
       </div>
     </div>
   );
 };
 
-export default Register;
+export default RegisterPage;

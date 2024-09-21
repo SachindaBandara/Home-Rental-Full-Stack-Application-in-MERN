@@ -1,26 +1,62 @@
 import React, { useState } from "react";
-import '../styles/Register.scss'
+import { useNavigate } from "react-router-dom";
+import "../styles/Register.scss";
 
 const Register = () => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    profileImage: null,
+  });
 
-  const [formData, setFormData ] = useState({
-    firstName:"",
-    lastName:"",
-    email:"",
-    password:"",
-    confirmPassword:"",
-    profileImage:null
-  })
-
-  const handleChange = (e) =>{
-    const { name, value, files } = e.target
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
     setFormData({
       ...formData,
       [name]: value,
-      [name]: name === "profileImage" ? files[0]: value
-    })
-  }
+      [name]: name === "profileImage" ? files[0] : value,
+    });
+  };
 
+  console.log(formData)
+
+  const [passwordMatch, setPasswordMatch] = useState(true);
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (formData.password === formData.confirmPassword) {
+      setPasswordMatch(true);
+    } else {
+      setPasswordMatch(false);
+    }
+
+    try{
+
+      const register_form = new FormData()
+
+      for (var key in formData){
+        register_form.append(key, formData[key])
+      }
+
+      const response = await fetch("http://localhost:3001/auth/register", {
+        method: "POST",
+        body: register_form,
+      });
+
+      if(response.ok){
+        navigate("/login")
+      }
+
+    }catch(error){
+console.log("Registration failed", error.message)
+    }
+  };
 
   return (
     <div className="register">
@@ -35,22 +71,22 @@ const Register = () => {
             required
           />
 
-          <input 
-            type="text" 
-            placeholder="Last Name" 
-            name="lastName" 
+          <input
+            type="text"
+            placeholder="Last Name"
+            name="lastName"
             value={formData.lastName}
             onChange={handleChange}
-            required 
+            required
           />
 
-          <input 
-            type="email" 
-            placeholder="Email" 
-            name="email" 
+          <input
+            type="email"
+            placeholder="Email"
+            name="email"
             value={formData.email}
             onChange={handleChange}
-            required 
+            required
           />
           <input
             type="password"
@@ -80,19 +116,22 @@ const Register = () => {
           />
 
           <label htmlFor="image">
-            <img src="../../public/assets/addImage.png" alt="Add Profile Photo" />
+            <img
+              src="../../public/assets/addImage.png"
+              alt="Add Profile Photo"
+            />
             <p>Upload Your Photo</p>
           </label>
 
           {formData.profileImage && (
-            <img src = {URL.createObjectURL(formData.profileImage)} 
-            alt="profile photo"
-            style={{maxWidth: "80px"}}
+            <img
+              src={URL.createObjectURL(formData.profileImage)}
+              alt="profile photo"
+              style={{ maxWidth: "80px" }}
             />
           )}
 
           <button type="submit">Register</button>
-
         </form>
         <a>
           Already have an account? <a href="/login">Login here</a>

@@ -23,20 +23,22 @@ const Login = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      // Get data after fetching
       const loggedIn = await response.json();
-      if (loggedIn) {
+      if (response.ok) {
         dispatch(
           setLogin({
             user: loggedIn.user,
             token: loggedIn.token,
           })
         );
-
         navigate("/");
-        console.log("Login Failed", err.message);
+        console.log("Login successful");
+      } else {
+        console.log("Login failed: ", loggedIn.message);
       }
-    } catch (err) {}
+    } catch (err) {
+      console.error("Login error: ", err.message);
+    }
   };
 
   return (

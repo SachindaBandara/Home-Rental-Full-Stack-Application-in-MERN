@@ -6,8 +6,24 @@ import { RemoveCircleOutline, AddCircleOutline } from "@mui/icons-material";
 import variables from "../styles/variables.scss";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { IoIosImages } from "react-icons/io";
+import { BiTrash } from "react-icons/bi";
 
 const CreateListing = () => {
+
+  const [category, setCategory] = useState("");
+  const [type, setType] = useState("");
+  const [amenities, setAmenities] = useState("");
+
+  // Location
+const [formLocation, setFormLocation] = useState({
+    streetAddress:"",
+    aptSuite:"",
+    city:"",
+    province:"",
+    country:""
+})
+
+
   const [guestCount, setGuestCount] = useState(1);
   const [bedroomCount, setBedroomCount] = useState(1);
   const [bedCount, setBedCount] = useState(1);
@@ -49,7 +65,7 @@ const CreateListing = () => {
             <h3>Which of these categories best describes your place?</h3>
             <div className="category-list">
               {categories?.map((item, index) => (
-                <div className="category" key={index}>
+                <div className={`category ${category === item.label ? "selected" : ""}`} key={index} onClick={()=> setCategory(item.label)}>
                   <div className="category_icon">{item.icon}</div>
                   <p>{item.label}</p>
                 </div>
@@ -59,7 +75,8 @@ const CreateListing = () => {
             <h3>What type of place will guests have?</h3>
             <div className="type-list">
               {types?.map((item, index) => (
-                <div className="type" key={index}>
+                <div className={`type ${type === item.name ? "selected" : ""}`}
+                key={index} onClick={()=> setType(item.name)}>
                   <div className="type_text">
                     <h4>{item.name}</h4>
                     <p>{item.description}</p>
@@ -270,31 +287,92 @@ const CreateListing = () => {
                       </>
                     )}
 
-                    {photos.map((photos, index) => {
-                      return (
-                        <Draggable
-                          key={index}
-                          draggableId={index.toString()}
-                          index={index}
-                        >
-                          {(provided) => (
-                            <div
-                              className="photos"
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
+                    {photos.length >= 1 && (
+                      <>
+                        {photos.map((photos, index) => {
+                          return (
+                            <Draggable
+                              key={index}
+                              draggableId={index.toString()}
+                              index={index}
                             >
-                                <img src={URL.createObjectURL(photo)} alt="place" />
-                            </div>
-                          )}
+                              {(provided) => (
+                                <div
+                                  className="photos"
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                >
+                                  <img
+                                    src={URL.createObjectURL(photos)}
+                                    alt="place"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => handleRemovePhotos(index)}
+                                  >
+                                    <BiTrash />
+                                  </button>
+                                </div>
+                              )}
+                            </Draggable>
+                          );
+                        })}
 
-                        </Draggable>
-                      );
-                    })}
+                        <input
+                          id="image"
+                          type="file"
+                          style={{ display: "none" }}
+                          accept="image/*"
+                          onChange={handleUploadPhotos}
+                          multiple
+                        />
+                        <label htmlFor="image" className="together">
+                          <div className="icon">
+                            <IoIosImages />
+                          </div>
+                          <p>Upload form your device</p>
+                        </label>
+                      </>
+                    )}
                   </div>
                 )}
               </Droppable>
             </DragDropContext>
+
+            <h3>What make your place attractive and exciting?</h3>
+            <div className="description">
+              <p>Title</p>
+              <input type="text" placeholder="Title" name="title" required />
+
+              <p>Description</p>
+              <textarea
+                type="text"
+                placeholder="Description"
+                name="description"
+                required
+              />
+
+              <p>Highlight</p>
+              <input
+                type="text"
+                placeholder="Highlight"
+                name="highlight"
+                required
+              />
+
+              <p>Highlight Details</p>
+              <textarea
+                type="text"
+                placeholder="Highlight Details"
+                name="highlightDescription"
+                required
+              />
+
+              <p>Now, set your Price</p>
+              <span>$</span>
+              <input type="number" placeholder="100" name="price" required className="price" />
+            </div>
           </div>
         </form>
       </div>

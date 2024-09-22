@@ -1,20 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/CreateListing.scss";
 import Navbar from "../components/Navbar";
-import { categories, types } from "../data";
-import { RemoveCircleOutline, AddCircleOutline, AddCircleRounded } from "@mui/icons-material";
+import { categories, types, facilities } from "../data";
+import { RemoveCircleOutline, AddCircleOutline } from "@mui/icons-material";
 import variables from "../styles/variables.scss";
 
 const CreateListing = () => {
+  const [guestCount, setGuestCount] = useState(1);
+  const [bedroomCount, setBedroomCount] = useState(1);
+  const [bedCount, setBedCount] = useState(1);
+  const [bathroomCount, setBathroomCount] = useState(1);
+
   return (
     <>
       <Navbar />
 
       <div className="create-listing">
-        <h1>Publish Your place</h1>
+        <h1>Publish Your Place</h1>
         <form>
           <div className="create-listing-step1">
-            <h2>Step:1 Tell us about your place</h2>
+            <h2>Step 1: Tell us about your place</h2>
             <hr />
             <h3>Which of these categories best describes your place?</h3>
             <div className="category-list">
@@ -29,7 +34,7 @@ const CreateListing = () => {
             <h3>What type of place will guests have?</h3>
             <div className="type-list">
               {types?.map((item, index) => (
-                <div className="type">
+                <div className="type" key={index}>
                   <div className="type_text">
                     <h4>{item.name}</h4>
                     <p>{item.description}</p>
@@ -54,12 +59,11 @@ const CreateListing = () => {
 
             <div className="half">
               <div className="location">
-                <p>Apartment, Suite, ect.(if applicable)</p>
+                <p>Apartment, Suite, etc. (if applicable)</p>
                 <input
                   type="text"
-                  placeholder="Apartment, Suite, ect.(if applicable)"
+                  placeholder="Apartment, Suite, etc."
                   name="aptSuite"
-                  required
                 />
               </div>
 
@@ -93,26 +97,124 @@ const CreateListing = () => {
 
             <h3>Share some basics about your place</h3>
             <div className="basics">
+              {/* Guests */}
               <div className="basic">
-                <p>Guest</p>
+                <p>Guests</p>
                 <div className="basic_count">
                   <RemoveCircleOutline
+                    onClick={() =>
+                      setGuestCount(guestCount > 1 ? guestCount - 1 : 1)
+                    }
                     sx={{
                       fontSize: "25px",
                       cursor: "pointer",
                       "&:hover": { color: variables.pinkred },
                     }}
                   />
-                  <p>1</p>
+                  <p>{guestCount}</p>
                   <AddCircleOutline
-                  sx={{
-                    fontSize: "25px",
-                    cursor: "pointer",
-                    "&:hover": { color: variables.pinkred },
-                  }}
+                    onClick={() => setGuestCount(guestCount + 1)}
+                    sx={{
+                      fontSize: "25px",
+                      cursor: "pointer",
+                      "&:hover": { color: variables.pinkred },
+                    }}
                   />
                 </div>
               </div>
+
+              {/* Bedrooms */}
+              <div className="basic">
+                <p>Bedrooms</p>
+                <div className="basic_count">
+                  <RemoveCircleOutline
+                    onClick={() =>
+                      setBedroomCount(bedroomCount > 1 ? bedroomCount - 1 : 1)
+                    }
+                    sx={{
+                      fontSize: "25px",
+                      cursor: "pointer",
+                      "&:hover": { color: variables.pinkred },
+                    }}
+                  />
+                  <p>{bedroomCount}</p>
+                  <AddCircleOutline
+                    onClick={() => setBedroomCount(bedroomCount + 1)}
+                    sx={{
+                      fontSize: "25px",
+                      cursor: "pointer",
+                      "&:hover": { color: variables.pinkred },
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Beds */}
+              <div className="basic">
+                <p>Beds</p>
+                <div className="basic_count">
+                  <RemoveCircleOutline
+                    onClick={() => setBedCount(bedCount > 1 ? bedCount - 1 : 1)}
+                    sx={{
+                      fontSize: "25px",
+                      cursor: "pointer",
+                      "&:hover": { color: variables.pinkred },
+                    }}
+                  />
+                  <p>{bedCount}</p>
+                  <AddCircleOutline
+                    onClick={() => setBedCount(bedCount + 1)}
+                    sx={{
+                      fontSize: "25px",
+                      cursor: "pointer",
+                      "&:hover": { color: variables.pinkred },
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Bathrooms */}
+              <div className="basic">
+                <p>Bathrooms</p>
+                <div className="basic_count">
+                  <RemoveCircleOutline
+                    onClick={() =>
+                      setBathroomCount(
+                        bathroomCount > 1 ? bathroomCount - 1 : 1
+                      )
+                    }
+                    sx={{
+                      fontSize: "25px",
+                      cursor: "pointer",
+                      "&:hover": { color: variables.pinkred },
+                    }}
+                  />
+                  <p>{bathroomCount}</p>
+                  <AddCircleOutline
+                    onClick={() => setBathroomCount(bathroomCount + 1)}
+                    sx={{
+                      fontSize: "25px",
+                      cursor: "pointer",
+                      "&:hover": { color: variables.pinkred },
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="create-listing_step2">
+            <h2>Step 2: Make your place stand out</h2>
+            <hr />
+
+            <h3>Tell guests what your place has to offer</h3>
+            <div className="amenities">
+              {facilities?.map((item, index) => (
+                <div className="facility" key={index}>
+                  <div className="faciliti_icon">{item.icon}</div>
+                 <p>{item.name}</p>
+                </div>
+              ))}
             </div>
           </div>
         </form>

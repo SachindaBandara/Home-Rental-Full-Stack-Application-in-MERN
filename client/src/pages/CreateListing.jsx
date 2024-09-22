@@ -9,26 +9,45 @@ import { IoIosImages } from "react-icons/io";
 import { BiTrash } from "react-icons/bi";
 
 const CreateListing = () => {
-
   const [category, setCategory] = useState("");
   const [type, setType] = useState("");
-  const [amenities, setAmenities] = useState("");
+ 
 
   // Location
-const [formLocation, setFormLocation] = useState({
-    streetAddress:"",
-    aptSuite:"",
-    city:"",
-    province:"",
-    country:""
-})
+  const [formLocation, setFormLocation] = useState({
+    streetAddress: "",
+    aptSuite: "",
+    city: "",
+    province: "",
+    country: "",
+  });
 
+  const handleChangeLocation = (e) => {
+    const { name, value } = e.target;
+    setFormLocation({
+      ...formLocation,
+      [name]: value,
+    });
+  };
 
+  // Basic Count
   const [guestCount, setGuestCount] = useState(1);
   const [bedroomCount, setBedroomCount] = useState(1);
   const [bedCount, setBedCount] = useState(1);
   const [bathroomCount, setBathroomCount] = useState(1);
 
+// Amenities section
+  const [amenities, setAmenities] = useState("");
+
+  const handleSelectAmenities = (facility) => {
+    if(amenities.includes(facility)){
+        setAmenities((prevAmenities) => prevAmenities.filter((option)=> option !== facility))
+    } else{
+        setAmenities((prev)=>[...prev, facility])
+    }
+  }
+
+  // Upload, Drag and Drop, Remove Photos
   const [photos, setPhotos] = useState([]);
 
   const handleUploadPhotos = (e) => {
@@ -65,7 +84,13 @@ const [formLocation, setFormLocation] = useState({
             <h3>Which of these categories best describes your place?</h3>
             <div className="category-list">
               {categories?.map((item, index) => (
-                <div className={`category ${category === item.label ? "selected" : ""}`} key={index} onClick={()=> setCategory(item.label)}>
+                <div
+                  className={`category ${
+                    category === item.label ? "selected" : ""
+                  }`}
+                  key={index}
+                  onClick={() => setCategory(item.label)}
+                >
                   <div className="category_icon">{item.icon}</div>
                   <p>{item.label}</p>
                 </div>
@@ -75,8 +100,11 @@ const [formLocation, setFormLocation] = useState({
             <h3>What type of place will guests have?</h3>
             <div className="type-list">
               {types?.map((item, index) => (
-                <div className={`type ${type === item.name ? "selected" : ""}`}
-                key={index} onClick={()=> setType(item.name)}>
+                <div
+                  className={`type ${type === item.name ? "selected" : ""}`}
+                  key={index}
+                  onClick={() => setType(item.name)}
+                >
                   <div className="type_text">
                     <h4>{item.name}</h4>
                     <p>{item.description}</p>
@@ -94,6 +122,8 @@ const [formLocation, setFormLocation] = useState({
                   type="text"
                   placeholder="Street Address"
                   name="streetAddress"
+                  value={formLocation.streetAddress}
+                  onChange={handleChangeLocation}
                   required
                 />
               </div>
@@ -106,12 +136,22 @@ const [formLocation, setFormLocation] = useState({
                   type="text"
                   placeholder="Apartment, Suite, etc."
                   name="aptSuite"
+                  value={formLocation.aptSuite}
+                  onChange={handleChangeLocation}
+                  required
                 />
               </div>
 
               <div className="location">
                 <p>City</p>
-                <input type="text" placeholder="City" name="city" required />
+                <input
+                  type="text"
+                  placeholder="City"
+                  name="city"
+                  value={formLocation.city}
+                  onChange={handleChangeLocation}
+                  required
+                />
               </div>
             </div>
 
@@ -122,6 +162,8 @@ const [formLocation, setFormLocation] = useState({
                   type="text"
                   placeholder="Province"
                   name="province"
+                  value={formLocation.province}
+                  onChange={handleChangeLocation}
                   required
                 />
               </div>
@@ -132,6 +174,8 @@ const [formLocation, setFormLocation] = useState({
                   type="text"
                   placeholder="Country"
                   name="country"
+                  value={formLocation.country}
+                  onChange={handleChangeLocation}
                   required
                 />
               </div>
@@ -252,7 +296,7 @@ const [formLocation, setFormLocation] = useState({
             <h3>Tell guests what your place has to offer</h3>
             <div className="amenities">
               {facilities?.map((item, index) => (
-                <div className="facility" key={index}>
+                <div className={`facility ${amenities.includes(item) ? "selected" :""}`} key={index} onClick={()=> handleSelectAmenities()}>
                   <div className="faciliti_icon">{item.icon}</div>
                   <p>{item.name}</p>
                 </div>
@@ -371,7 +415,13 @@ const [formLocation, setFormLocation] = useState({
 
               <p>Now, set your Price</p>
               <span>$</span>
-              <input type="number" placeholder="100" name="price" required className="price" />
+              <input
+                type="number"
+                placeholder="100"
+                name="price"
+                required
+                className="price"
+              />
             </div>
           </div>
         </form>

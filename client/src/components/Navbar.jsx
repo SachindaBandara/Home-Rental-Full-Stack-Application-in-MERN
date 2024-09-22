@@ -1,17 +1,17 @@
-import React, { useState } from "react";
 import { IconButton } from "@mui/material";
 import { Search, Person, Menu } from "@mui/icons-material";
-import variables from "../styles/variables.scss";
-import "../styles/Navbar.scss";
-import { Link } from "react-router-dom";
-import { setLogOut } from "../redux/state";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import "../styles/Navbar.scss";
+import { Link, useNavigate } from "react-router-dom";
+import { setLogOut } from "../redux/state";  // Corrected import
 
 const Navbar = () => {
   const [dropdownMenu, setDropdownMenu] = useState(false);
   const user = useSelector((state) => state.user);
-
   const dispatch = useDispatch();
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   return (
     <div className="navbar">
@@ -20,20 +20,30 @@ const Navbar = () => {
       </a>
 
       <div className="navbar_search">
-        <input type="text" placeholder="Search..." />
+        <input
+          type="text"
+          placeholder="Search ..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <IconButton
+          disabled={search === ""}
+          onClick={() => {
+            if (search) navigate(`/properties/search/${search}`);
+          }}
+        >
+          <Search sx={{ color: "#FF5A5F" }} />
+        </IconButton>
       </div>
-      <IconButton>
-        <Search sx={{ color: variables.pinkred }} />
-      </IconButton>
 
       <div className="navbar_right">
         {user ? (
           <a href="/create-listing" className="host">
-            Become a host
+            Become A Host
           </a>
         ) : (
           <a href="/login" className="host">
-            Become a host
+            Become A Host
           </a>
         )}
 
@@ -41,16 +51,16 @@ const Navbar = () => {
           className="navbar_right_account"
           onClick={() => setDropdownMenu(!dropdownMenu)}
         >
-          <Menu sx={{ color: variables.darkgrey }} />
+          <Menu sx={{ color: "#4a4a4a" }} />
           {!user ? (
-            <Person sx={{ color: variables.darkgrey }} />
+            <Person sx={{ color: "#4a4a4a" }} />
           ) : (
             <img
               src={`http://localhost:3001/${user.profileImagePath.replace(
                 "public",
                 ""
               )}`}
-              alt="profile photo"
+              alt="profile"
               style={{ objectFit: "cover", borderRadius: "50%" }}
             />
           )}
@@ -58,23 +68,23 @@ const Navbar = () => {
 
         {dropdownMenu && !user && (
           <div className="navbar_right_accountmenu">
-            <Link to="/login">Logn In</Link>
+            <Link to="/login">Log In</Link>
             <Link to="/register">Sign Up</Link>
           </div>
         )}
 
         {dropdownMenu && user && (
           <div className="navbar_right_accountmenu">
-            <Link to="">Trip List</Link>
-            <Link to="">Wish List</Link>
-            <Link to="">Property List</Link>
-            <Link to="">Reservation List</Link>
-            <Link to="">Become a host</Link>
+            <Link to={`/${user._id}/trips`}>Trip List</Link>
+            <Link to={`/${user._id}/wishList`}>Wish List</Link>
+            <Link to={`/${user._id}/properties`}>Property List</Link>
+            <Link to={`/${user._id}/reservations`}>Reservation List</Link>
+            <Link to="/create-listing">Become A Host</Link>
 
             <Link
               to="/login"
               onClick={() => {
-                dispatch(setLogOu());
+                dispatch(setLogOut());  // Corrected function name
               }}
             >
               Log Out

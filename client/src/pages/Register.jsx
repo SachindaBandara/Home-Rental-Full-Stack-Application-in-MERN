@@ -12,6 +12,9 @@ const RegisterPage = () => {
     profileImage: null,
   });
 
+  const [passwordMatch, setPasswordMatch] = useState(true);
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prevState) => ({
@@ -20,27 +23,27 @@ const RegisterPage = () => {
     }));
   };
 
-  const [passwordMatch, setPasswordMatch] = useState(true);
-
   useEffect(() => {
-    setPasswordMatch(formData.password === formData.confirmPassword || formData.confirmPassword === "");
+    setPasswordMatch(
+      formData.password === formData.confirmPassword ||
+        formData.confirmPassword === ""
+    );
   }, [formData.password, formData.confirmPassword]);
-
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const register_form = new FormData();
+    if (!passwordMatch) return;
 
+    try {
+      const registerForm = new FormData();
       for (const key in formData) {
-        register_form.append(key, formData[key]);
+        registerForm.append(key, formData[key]);
       }
 
       const response = await fetch("http://localhost:3001/auth/register", {
         method: "POST",
-        body: register_form
+        body: registerForm,
       });
 
       if (response.ok) {
@@ -49,7 +52,7 @@ const RegisterPage = () => {
         console.error("Registration failed", await response.text());
       }
     } catch (err) {
-      console.log("Registration failed", err.message);
+      console.error("Registration failed", err.message);
     }
   };
 
@@ -110,18 +113,21 @@ const RegisterPage = () => {
             required
           />
           <label htmlFor="image">
-            <img src="/assets/addImage.png" alt="Add Profile Photo" />
+            <img src="/assets/addImage.png" alt="Add Profile" />
             <p>Upload Your Photo</p>
           </label>
 
           {formData.profileImage && (
             <img
               src={URL.createObjectURL(formData.profileImage)}
-              alt="Profile Photo"
-              style={{ maxWidth: "80px" }}
+              alt="Profile"
+              style={{ maxWidth: "80px", marginTop: "10px" }}
             />
           )}
-          <button type="submit" disabled={!passwordMatch}>REGISTER</button>
+
+          <button type="submit" disabled={!passwordMatch}>
+            REGISTER
+          </button>
         </form>
         <a href="/login">Already have an account? Log In Here</a>
       </div>

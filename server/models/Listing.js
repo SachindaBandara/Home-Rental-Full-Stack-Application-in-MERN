@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const ListingSchema = new mongoose.Schema({
   creator: {
-    type: Schema.Types.objectid,
+    type: mongoose.Schema.Types.objectid,
     ref: "User",
   },
 

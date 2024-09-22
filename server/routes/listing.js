@@ -3,6 +3,7 @@ const multer = require("multer"); // Sse for file uploading
 
 const Listing = require("../models/Listing");
 const User = require("../models/User");
+const { categories } = require("../../client/src/data");
 
 // Configuration Multer for file upload
 const storage = multer.diskStorage({
@@ -78,3 +79,26 @@ router.post("/create", upload.array("listingPhotos"), async (req, res) => {
     console.log(err)
   }
 });
+
+// Get Listing
+router.get("/", async (req, res) =>{
+    const qCategory = req.query.category
+
+    try{
+
+        let listings
+        if(qCategory) {
+            listings = await Listing.find({ category : qCategory }).populate("creator")
+        } else{
+            listings = await Listing.find()
+        }
+
+        res.status(200).json(listings)
+
+    } catch(err){
+        res.status(404).json({ message: "Fail to fetch listing", error: err.message})
+        console.log(err)
+    }
+})
+
+module.export = router

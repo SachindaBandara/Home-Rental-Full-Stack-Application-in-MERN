@@ -7,11 +7,12 @@ import variables from "../styles/variables.scss";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { IoIosImages } from "react-icons/io";
 import { BiTrash } from "react-icons/bi";
+import { useSelector } from "react-redux";
+import state from "../redux/state";
 
 const CreateListing = () => {
   const [category, setCategory] = useState("");
   const [type, setType] = useState("");
- 
 
   // Location
   const [formLocation, setFormLocation] = useState({
@@ -36,16 +37,18 @@ const CreateListing = () => {
   const [bedCount, setBedCount] = useState(1);
   const [bathroomCount, setBathroomCount] = useState(1);
 
-// Amenities section
+  // Amenities section
   const [amenities, setAmenities] = useState("");
 
   const handleSelectAmenities = (facility) => {
-    if(amenities.includes(facility)){
-        setAmenities((prevAmenities) => prevAmenities.filter((option)=> option !== facility))
-    } else{
-        setAmenities((prev)=>[...prev, facility])
+    if (amenities.includes(facility)) {
+      setAmenities((prevAmenities) =>
+        prevAmenities.filter((option) => option !== facility)
+      );
+    } else {
+      setAmenities((prev) => [...prev, facility]);
     }
-  }
+  };
 
   // Upload, Drag and Drop, Remove Photos
   const [photos, setPhotos] = useState([]);
@@ -73,21 +76,49 @@ const CreateListing = () => {
 
   //Description setion
   const [formDescription, setFormDescription] = useState({
-    title:"",
-    description:"",
-    highlight:"",
-    highlightDesc:"",
-    price: 0
-  })
+    title: "",
+    description: "",
+    highlight: "",
+    highlightDesc: "",
+    price: 0,
+  });
 
-  const handleChangeDescription= (e)=>{
-    const { name, value } = e.target
+  const handleChangeDescription = (e) => {
+    const { name, value } = e.target;
     setFormDescription({
-        ...formDescription,
-        [name]: value
-    })
-  }
+      ...formDescription,
+      [name]: value,
+    });
+  };
 
+  const creatorId = useSelector((state) => state.user._id);
+
+  const handlePost = async (e) => {
+    e.preventdefault();
+
+    try {
+      // Create form data object to handle files upload
+      const listingForm = new FormData();
+      listingForm.append("creator", creatorId);
+      listingForm.append("category", category);
+      listingForm.append("type", type);
+      listingForm.append("streetAddress", formLocation.streetAddress);
+      listingForm.append("aptSuite", formLocation.aptSuite);
+      listingForm.append("city", formLocation.city);
+      listingForm.append("province", formLocation.province);
+      listingForm.append("country", formLocation.country);
+      listingForm.append("guestCount", guestCount);
+      listingForm.append("bedroomCount", bedroomCount);
+      listingForm.append("bedCount", bedCount);
+      listingForm.append("bathroomCount", bathroomCount);
+      listingForm.append("amenities", amenities);
+      listingForm.append("title", formDescription.title);
+      listingForm.append("description", formDescription.description);
+      listingForm.append("highlight", formDescription.highlight);
+      listingForm.append("highlightDesc", formDescription.highlightDesc);
+      listingForm.append("price", formDescription.price);
+    } catch (err) {}
+  };
   return (
     <>
       <Navbar />
@@ -313,7 +344,13 @@ const CreateListing = () => {
             <h3>Tell guests what your place has to offer</h3>
             <div className="amenities">
               {facilities?.map((item, index) => (
-                <div className={`facility ${amenities.includes(item) ? "selected" :""}`} key={index} onClick={()=> handleSelectAmenities()}>
+                <div
+                  className={`facility ${
+                    amenities.includes(item) ? "selected" : ""
+                  }`}
+                  key={index}
+                  onClick={() => handleSelectAmenities()}
+                >
                   <div className="faciliti_icon">{item.icon}</div>
                   <p>{item.name}</p>
                 </div>
@@ -404,7 +441,14 @@ const CreateListing = () => {
             <h3>What make your place attractive and exciting?</h3>
             <div className="description">
               <p>Title</p>
-              <input type="text" placeholder="Title" name="title" value={formDescription.title} onChange={handleChangeDescription} required />
+              <input
+                type="text"
+                placeholder="Title"
+                name="title"
+                value={formDescription.title}
+                onChange={handleChangeDescription}
+                required
+              />
 
               <p>Description</p>
               <textarea
@@ -449,6 +493,9 @@ const CreateListing = () => {
               />
             </div>
           </div>
+          <button className="submit_btn" type="submit">
+            Create Listing
+          </button>
         </form>
       </div>
     </>

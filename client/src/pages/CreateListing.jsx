@@ -346,10 +346,10 @@ const CreateListing = () => {
               {facilities?.map((item, index) => (
                 <div
                   className={`facility ${
-                    amenities.includes(item) ? "selected" : ""
+                    amenities.includes(item.name) ? "selected" : ""
                   }`}
                   key={index}
-                  onClick={() => handleSelectAmenities()}
+                  onClick={() => handleSelectAmenities(item.name)}
                 >
                   <div className="faciliti_icon">{item.icon}</div>
                   <p>{item.name}</p>

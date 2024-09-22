@@ -63,7 +63,7 @@ const ListingSchema = new mongoose.Schema({
 
   amenities: {
     type: Array,
-    default: [{}],
+    default: [],
   },
 
   // Store photos URLs

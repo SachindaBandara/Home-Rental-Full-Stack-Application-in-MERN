@@ -71,6 +71,23 @@ const CreateListing = () => {
     );
   };
 
+  //Description setion
+  const [formDescription, setFormDescription] = useState({
+    title:"",
+    description:"",
+    highlight:"",
+    highlightDesc:"",
+    price: 0
+  })
+
+  const handleChangeDescription= (e)=>{
+    const { name, value } = e.target
+    setFormDescription({
+        ...formDescription,
+        [name]: value
+    })
+  }
+
   return (
     <>
       <Navbar />
@@ -387,13 +404,15 @@ const CreateListing = () => {
             <h3>What make your place attractive and exciting?</h3>
             <div className="description">
               <p>Title</p>
-              <input type="text" placeholder="Title" name="title" required />
+              <input type="text" placeholder="Title" name="title" value={formDescription.title} onChange={handleChangeDescription} required />
 
               <p>Description</p>
               <textarea
                 type="text"
                 placeholder="Description"
+                value={formDescription.description}
                 name="description"
+                onChange={handleChangeDescription}
                 required
               />
 
@@ -402,6 +421,8 @@ const CreateListing = () => {
                 type="text"
                 placeholder="Highlight"
                 name="highlight"
+                value={formDescription.highlight}
+                onChange={handleChangeDescription}
                 required
               />
 
@@ -410,6 +431,8 @@ const CreateListing = () => {
                 type="text"
                 placeholder="Highlight Details"
                 name="highlightDescription"
+                value={formDescription.highlightDesc}
+                onChange={handleChangeDescription}
                 required
               />
 
@@ -421,6 +444,8 @@ const CreateListing = () => {
                 name="price"
                 required
                 className="price"
+                value={formDescription.price}
+                onChange={handleChangeDescription}
               />
             </div>
           </div>

@@ -6,6 +6,7 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRange } from "react-date-range";
 import Loader from "../components/Loader";
+import Navbar from "../components/Navbar";
 
 const ListingDetails = () => {
   const [loading, setLoading] = useState(true);
@@ -56,6 +57,7 @@ const ListingDetails = () => {
     <Loader />
   ) : (
     <>
+    <Navbar />
       <div className="listing-details">
         <div className="title">
           <h1>{listing.title}</h1>
@@ -110,11 +112,11 @@ const ListingDetails = () => {
                 <div className="facility" key={index}>
                   <div className="facility_icon">
                     {
-                      facilities.find((facility) => facility.name === item.name)
+                      facilities.find((facility) => facility.name === item)
                         ?.icon
                     }
                   </div>
-                  <p>item</p>
+                  <p>{item}</p>
                 </div>
               ))}
             </div>

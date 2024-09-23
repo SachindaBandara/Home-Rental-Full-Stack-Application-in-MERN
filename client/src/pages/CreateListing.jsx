@@ -9,6 +9,7 @@ import { IoIosImages } from "react-icons/io";
 import { BiTrash } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import state from "../redux/state";
+import { useNavigate } from "react-router-dom";
 
 const CreateListing = () => {
   const [category, setCategory] = useState("");
@@ -93,6 +94,8 @@ const CreateListing = () => {
 
   const creatorId = useSelector((state) => state.user._id);
 
+  const navigate = useNavigate();
+
   const handlePost = async (e) => {
     e.preventdefault();
 
@@ -120,17 +123,20 @@ const CreateListing = () => {
 
       // Append each selected photos to the formData object
       photos.forEach((photo) => {
-        listingForm.append("listingPhotos", photo)
-      })
+        listingForm.append("listingPhotos", photo);
+      });
 
       // Send a POST request to server
       const response = await fetch("http://localhost:3001/properties/create", {
         method: "POST",
         body: listingForm,
-      })
-
-      
-    } catch (err) {}
+      });
+      if (response.ok) {
+        navigate("/");
+      }
+    } catch (err) {
+      console.log("Publish Listing Failed", err.message);
+    }
   };
   return (
     <>
@@ -138,7 +144,7 @@ const CreateListing = () => {
 
       <div className="create-listing">
         <h1>Publish Your Place</h1>
-        <form>
+        <form onSubmit={handlePost}>
           <div className="create-listing-step1">
             <h2>Step 1: Tell us about your place</h2>
             <hr />

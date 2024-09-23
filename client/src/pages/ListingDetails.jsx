@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "../styles/ListingDetails.scss";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { facilities } from "../data";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRange } from "react-date-range";
 import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
+import { useSelector } from "react-redux";
 
 const ListingDetails = () => {
   const [loading, setLoading] = useState(true);
   const { listingId } = useParams();
   const [listing, setListing] = useState(null);
+  const navigate = useNavigate();
 
   const getListingDetails = async () => {
     try {
@@ -49,6 +51,37 @@ const ListingDetails = () => {
   // Calculate the difference
   const dayCount = Math.round(end - start) / (1000 * 60 * 60 * 24);
 
+  // Submit booking
+
+  const customerId = useSelector((state) => state?.user?._id);
+
+  const handleSubmit = async () => {
+    try {
+      const bookingForm = {
+        customerId,
+        listingId,
+        hostId: listing.creator._id,
+        startDate: dateRange[0].startDate.toDateString(),
+        endDate: dateRange[0].endDate.toDateString(),
+        totalPrice: listing.price * dayCount,
+      };
+
+      const response = await fetch("http://localhost:3001/bookings/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookingForm),
+      });
+
+      if (response.ok) {
+        navigate(`/${customerId}/trips`);
+      }
+    } catch (err) {
+      console.log("Submit booking failed", err.message);
+    }
+  };
+
   useEffect(() => {
     getListingDetails();
   }, []);
@@ -57,7 +90,7 @@ const ListingDetails = () => {
     <Loader />
   ) : (
     <>
-    <Navbar />
+      <Navbar />
       <div className="listing-details">
         <div className="title">
           <h1>{listing.title}</h1>
@@ -140,7 +173,7 @@ const ListingDetails = () => {
               <p>Start Date : {dataRange[0].startDate.toDateString()}</p>
               <p>End Date : {dataRange[0].endtDate.toDateString()}</p>
 
-              <button className="button" type="submit">
+              <button className="button" type="submit" onClick={handleSubmit}>
                 BOOKING
               </button>
             </div>

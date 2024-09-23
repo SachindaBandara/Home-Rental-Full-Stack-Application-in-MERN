@@ -73,32 +73,49 @@ router.post("/create", upload.array("listingPhotos"), async (req, res) => {
     });
     await newListing.save();
 
-    res.status(200).json(newListing)
+    res.status(200).json(newListing);
   } catch (err) {
-    res.status(409).json({ message: "Fail to create listing", error: err.message})
-    console.log(err)
+    res
+      .status(409)
+      .json({ message: "Fail to create listing", error: err.message });
+    console.log(err);
   }
 });
 
 // Get Listing
-router.get("/", async (req, res) =>{
-    const qCategory = req.query.category
+router.get("/", async (req, res) => {
+  const qCategory = req.query.category;
 
-    try{
-
-        let listings
-        if(qCategory) {
-            listings = await Listing.find({ category : qCategory }).populate("creator")
-        } else{
-            listings = await Listing.find().populate("creator")
-        }
-
-        res.status(200).json(listings)
-
-    } catch(err){
-        res.status(404).json({ message: "Fail to fetch listing", error: err.message})
-        console.log(err)
+  try {
+    let listings;
+    if (qCategory) {
+      listings = await Listing.find({ category: qCategory }).populate(
+        "creator"
+      );
+    } else {
+      listings = await Listing.find().populate("creator");
     }
-})
 
-module.export = router
+    res.status(200).json(listings);
+  } catch (err) {
+    res
+      .status(404)
+      .json({ message: "Fail to fetch listing", error: err.message });
+    console.log(err);
+  }
+});
+
+// Listing Details API
+router.get("/:listingId", async (req, res) => {
+  try {
+    const { listingId } = req.params;
+    const listing = await Listing.findById(listingId);
+    res.status(202).json(listing);
+  } catch (err) {
+    res
+      .status(404)
+      .json({ message: "Listing can not find", error: err.message });
+  }
+});
+
+module.export = router;

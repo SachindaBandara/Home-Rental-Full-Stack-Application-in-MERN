@@ -48,12 +48,24 @@ const ListingCard = ({
           ))}
         </div>
 
-        <div className="prev-button" onClick={gotoPrevSlide}>
+        <div
+          className="prev-button"
+          onClick={(e) => {
+            e.stopPropagation();
+            gotoPrevSlide(e);
+          }}
+        >
           <ArrowBackIosNew sx={{ fontSize: "15px" }} />
         </div>
 
-        <div className="next-button" onClick={gotoNextSlide}>
-          <ArrowForwardIos sx={{ fontSize: "15px" }} />
+        <div
+          className="next-button"
+          onClick={(e) => {
+            e.stopPropagation();
+            gotoNextSlide(e);
+          }}
+        >
+          <ArrowForwardIosNew sx={{ fontSize: "15px" }} />
         </div>
       </div>
 

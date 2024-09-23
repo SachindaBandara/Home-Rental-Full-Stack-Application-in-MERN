@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "../styles/List.scss"
 
 const TripList = () => {
-  return (
-    <div>
+    const [ loading, setLoading ] = useState(true)
+
+
+  return loading ? <Loader/> : (
+    <div className=''>
       
     </div>
   )

@@ -6,6 +6,7 @@ import Loader from "./Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { setListings } from "../redux/state";
 
+
 const Listings = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);

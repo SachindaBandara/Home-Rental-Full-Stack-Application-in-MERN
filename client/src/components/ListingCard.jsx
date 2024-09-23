@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import "../styles/ListingCard.scss";
-import {
-  ArrowBackIosNew,
-  ArrowForwardIos,
-} from "@mui/icons-material";
+import { ArrowBackIosNew, ArrowForwardIos } from "@mui/icons-material";
 
 const ListingCard = ({
   listingId,
@@ -15,6 +12,10 @@ const ListingCard = ({
   category,
   type,
   price,
+  startDate,
+  endDate,
+  totalPrice,
+  booking,
 }) => {
   // slider for images
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -27,9 +28,7 @@ const ListingCard = ({
   };
 
   const gotoNextSlide = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex + 1) % listingPhotoPaths.length
-    );
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % listingPhotoPaths.length);
   };
 
   return (
@@ -62,10 +61,24 @@ const ListingCard = ({
         {city}, {province}, {country}
       </h3>
       <p>{category}</p>
-      <p>{type}</p>
-      <p>
-        <span>$ {price}</span> per night
-      </p>
+
+      {!booking ? (
+        <>
+          <p>{type}</p>
+          <p>
+            <span>$ {price}</span> per night
+          </p>
+        </>
+      ) : (
+        <>
+          <p>
+            {startDate} - {endDate}
+          </p>
+          <p>
+            <span>$ {totalPrice}</span> total
+          </p>
+        </>
+      )}
     </div>
   );
 };

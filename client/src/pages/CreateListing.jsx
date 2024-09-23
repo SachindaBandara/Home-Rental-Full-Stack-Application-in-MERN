@@ -117,6 +117,19 @@ const CreateListing = () => {
       listingForm.append("highlight", formDescription.highlight);
       listingForm.append("highlightDesc", formDescription.highlightDesc);
       listingForm.append("price", formDescription.price);
+
+      // Append each selected photos to the formData object
+      photos.forEach((photo) => {
+        listingForm.append("listingPhotos", photo)
+      })
+
+      // Send a POST request to server
+      const response = await fetch("http://localhost:3001/properties/create", {
+        method: "POST",
+        body: listingForm,
+      })
+
+      
     } catch (err) {}
   };
   return (

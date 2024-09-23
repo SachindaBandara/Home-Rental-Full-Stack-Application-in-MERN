@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { category } from "../data";
+import { categories } from "../data"; 
 import "../styles/Listings.scss";
 import ListingCard from "./ListingCard";
 import Loader from "./Loader";
 import { useDispatch, useSelector } from "react-redux";
-import state, { setListings } from "../redux/state";
+import { setListings } from "../redux/state";
 
 const Listings = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const Listings = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const listings = useSelector((state) => state.listings);
 
-  const getFeedLisitngs = async () => {
+  const getFeedListings = async () => {
     try {
       const response = await fetch(
         selectedCategory !== "All"
@@ -31,13 +31,13 @@ const Listings = () => {
   };
 
   useEffect(() => {
-    getFeedLisitngs();
+    getFeedListings();
   }, [selectedCategory]);
 
   return (
     <>
       <div className="category-list">
-        {category?.map((category, index) => (
+        {categories?.map((category, index) => (
           <div
             className={`category`}
             key={index}
@@ -54,8 +54,8 @@ const Listings = () => {
       ) : (
         <div className="listings">
           {listings.map(
-            (
-             {_id,
+            ({
+              _id,
               creator,
               listingPhotoPaths,
               city,
@@ -64,20 +64,21 @@ const Listings = () => {
               category,
               type,
               price,
-             // booking=flase
-             }) => (
-              <ListingCard 
-              listingId={_id}
-              creator={creator}
-              listingPhotoPaths={listingPhotoPaths}
-              city={city}
-              province={province}
-              country={country}
-              category={category}
-              type={type}
-              price={price}
-             // booking={booking}
-             />
+              booking = false,
+            }) => (
+              <ListingCard
+                key={_id}
+                listingId={_id}
+                creator={creator}
+                listingPhotoPaths={listingPhotoPaths}
+                city={city}
+                province={province}
+                country={country}
+                category={category}
+                type={type}
+                price={price}
+                booking={booking}
+              />
             )
           )}
         </div>

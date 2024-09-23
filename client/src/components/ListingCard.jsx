@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import "../styles/ListingCard.scss";
 import {
-  ArrowbackIosNew,
+  ArrowBackIosNew,
   ArrowForwardIos,
-  Transform,
 } from "@mui/icons-material";
 
-const ListingCard = (
+const ListingCard = ({
   listingId,
   creator,
   listingPhotoPaths,
@@ -15,8 +14,8 @@ const ListingCard = (
   country,
   category,
   type,
-  price
-) => {
+  price,
+}) => {
   // slider for images
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -25,48 +24,48 @@ const ListingCard = (
       (prevIndex) =>
         (prevIndex - 1 + listingPhotoPaths.length) % listingPhotoPaths.length
     );
-
-    const gotoNextSlide = () => {
-      setCurrentIndex(
-        (prevIndex) => (prevIndex + 1) % listingPhotoPaths.length
-      );
-    };
   };
+
+  const gotoNextSlide = () => {
+    setCurrentIndex(
+      (prevIndex) => (prevIndex + 1) % listingPhotoPaths.length
+    );
+  };
+
   return (
     <div className="listing-card">
       <div className="slider-container">
         <div
-          className="silder"
+          className="slider"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {listingPhotoPaths?.map((photos, index) => {
+          {listingPhotoPaths?.map((photo, index) => (
             <div key={index} className="slide">
               <img
                 src={`http://localhost:3001/${photo?.replace("public", "")}`}
                 alt={`photo ${index + 1}`}
               />
+            </div>
+          ))}
+        </div>
 
-              <div
-                className="prev-button"
-                onClick={(e) => {
-                  gotoPrevSlide(e);
-                }}
-              >
-                <ArrowbackIosNew sx={{ fontSize: "15px" }} />
-              </div>
+        <div className="prev-button" onClick={gotoPrevSlide}>
+          <ArrowBackIosNew sx={{ fontSize: "15px" }} />
+        </div>
 
-              <div
-                className="next-button"
-                onClick={(e) => {
-                  gotoNextSlide(e);
-                }}
-              >
-                <ArrowForwardIos sx={{ fontSize: "15px" }} />
-              </div>
-            </div>;
-          })}
+        <div className="next-button" onClick={gotoNextSlide}>
+          <ArrowForwardIos sx={{ fontSize: "15px" }} />
         </div>
       </div>
+
+      <h3>
+        {city}, {province}, {country}
+      </h3>
+      <p>{category}</p>
+      <p>{type}</p>
+      <p>
+        <span>$ {price}</span> per night
+      </p>
     </div>
   );
 };

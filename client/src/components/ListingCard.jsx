@@ -31,6 +31,28 @@ const ListingCard = ({
     setCurrentIndex((prevIndex) => (prevIndex + 1) % listingPhotoPaths.length);
   };
 
+  const navigate = useNavigate();
+
+  // add wish list
+  const user = useSelector((state) => state.user);
+  const wishList = useSelector((state) => state.wishList);
+
+  const isLiked = wishList.find((item) => item._id === listingId);
+
+  const patchWishList = async () => {
+    const response = await fetch(
+      `http://localhost:3001/users/${user._id}/${listingId}`,
+      {
+        method: "PATCH",
+        header: {
+          "Content-Type": "appliction/json",
+        },
+      }
+    );
+
+    const data = await response.json();
+  };
+
   return (
     <div className="listing-card">
       <div className="slider-container">

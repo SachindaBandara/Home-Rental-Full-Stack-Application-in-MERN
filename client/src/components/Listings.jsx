@@ -16,8 +16,8 @@ const Listings = () => {
     try {
       const response = await fetch(
         selectedCategory !== "All"
-          ? `http://localhost3001/properties?category=${selectedCategory}`
-          : "http://localhost3001/properties",
+          ? `http://localhost:3001/properties?category=${selectedCategory}`
+          : "http://localhost:3001/properties",
         {
           method: "GET",
         }
@@ -35,18 +35,54 @@ const Listings = () => {
   }, [selectedCategory]);
 
   return (
-    <div className="category-list">
-      {category?.map((category, index) => (
-        <div
-          className={`category`}
-          key={index}
-          onClick={() => setSelectedCategory(category.label)}
-        >
-          <div className="category-icon">{category.icon}</div>
-          <p>{category.label}</p>
+    <>
+      <div className="category-list">
+        {category?.map((category, index) => (
+          <div
+            className={`category`}
+            key={index}
+            onClick={() => setSelectedCategory(category.label)}
+          >
+            <div className="category-icon">{category.icon}</div>
+            <p>{category.label}</p>
+          </div>
+        ))}
+      </div>
+
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="listings">
+          {listings.map(
+            (
+             {_id,
+              creator,
+              listingPhotoPaths,
+              city,
+              province,
+              country,
+              category,
+              type,
+              price,
+             // booking=flase
+             }) => (
+              <ListingCard 
+              listingId={_id}
+              creator={creator}
+              listingPhotoPaths={listingPhotoPaths}
+              city={city}
+              province={province}
+              country={country}
+              category={category}
+              type={type}
+              price={price}
+             // booking={booking}
+             />
+            )
+          )}
         </div>
-      ))}
-    </div>
+      )}
+    </>
   );
 };
 

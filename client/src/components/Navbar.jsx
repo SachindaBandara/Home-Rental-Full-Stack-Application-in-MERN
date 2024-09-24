@@ -68,7 +68,6 @@ const Navbar = () => {
           onClick={() => setDropdownMenu(!dropdownMenu)} // Toggle dropdown menu visibility
         >
           <Menu sx={{ color: "#4a4a4a" }} /> {/* Menu icon */}
-          
           {/* Show either a user profile image if logged in, or a generic person icon if not */}
           {!user ? (
             <Person sx={{ color: "#4a4a4a" }} /> // Default icon for guest users
@@ -88,7 +87,8 @@ const Navbar = () => {
         {dropdownMenu && !user && (
           <div className="navbar_right_accountmenu">
             <Link to="/login">Log In</Link> {/* Link to the login page */}
-            <Link to="/register">Sign Up</Link> {/* Link to the registration page */}
+            <Link to="/register">Sign Up</Link>{" "}
+            {/* Link to the registration page */}
           </div>
         )}
 
@@ -96,12 +96,16 @@ const Navbar = () => {
         {dropdownMenu && user && (
           <div className="navbar_right_accountmenu">
             {/* Links to various sections for logged-in users */}
-            <Link to={`/${user._id}/trips`}>Trip List</Link> {/* User's trip list */}
-            <Link to={`/${user._id}/wishList`}>Wish List</Link> {/* User's wishlist */}
-            <Link to={`/${user._id}/properties`}>Property List</Link> {/* User's properties */}
-            <Link to={`/${user._id}/reservations`}>Reservation List</Link> {/* User's reservations */}
-            <Link to="/create-listing">Become A Host</Link> {/* Link to create a new listing */}
-
+            <Link to={`/${user._id}/trips`}>Trip List</Link>{" "}
+            {/* User's trip list */}
+            <Link to={`/${user._id}/wishList`}>Wish List</Link>{" "}
+            {/* User's wishlist */}
+            <Link to={`/${user._id}/properties`}>Property List</Link>{" "}
+            {/* User's properties */}
+            <Link to={`/${user._id}/reservations`}>Reservation List</Link>{" "}
+            {/* User's reservations */}
+            <Link to="/create-listing">Become A Host</Link>{" "}
+            {/* Link to create a new listing */}
             {/* Log Out link */}
             <Link
               to="/login"

@@ -53,8 +53,8 @@ const PropertyList = () => {
   ) : (
     <>
       <Navbar /> {/* Navbar component at the top of the page */}
-      <h1 className="title-list">Your Property List</h1> {/* Title for the property list page */}
-      
+      <h1 className="title-list">Your Property List</h1>{" "}
+      {/* Title for the property list page */}
       <div className="list">
         {/* Map through the property list and render each property using the ListingCard component */}
         {propertyList?.map(
@@ -86,7 +86,6 @@ const PropertyList = () => {
           )
         )}
       </div>
-
       <Footer /> {/* Footer component at the bottom of the page */}
     </>
   );

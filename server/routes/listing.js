@@ -82,7 +82,7 @@ router.post("/create", upload.array("listingPhotos"), async (req, res) => {
   }
 });
 
-// Get Listing
+// Get Listing by category
 router.get("/", async (req, res) => {
   const qCategory = req.query.category;
 
@@ -96,6 +96,32 @@ router.get("/", async (req, res) => {
       listings = await Listing.find().populate("creator");
     }
 
+    res.status(200).json(listings);
+  } catch (err) {
+    res
+      .status(404)
+      .json({ message: "Fail to fetch listing", error: err.message });
+    console.log(err);
+  }
+});
+
+// Get listing by serach API
+router.get("search/:search", async (req, res) => {
+  const { search } = req.params;
+
+  try {
+    let listing = [];
+
+    if (search == "all") {
+      listings = await Listing.find().populate("creator");
+    } else {
+      listings = await Listing.find({
+        $or: [
+          { category: { $regex: search, $option: "i" } },
+          { title: { $regex: search, $option: "i" } },
+        ],
+      }).populate("creator");
+    }
     res.status(200).json(listings);
   } catch (err) {
     res

@@ -3,6 +3,7 @@ import "../styles/List.scss";
 import Navbar from "../components/Navbar";
 import { useSelector } from "react-redux";
 import { setTripList } from "../redux/state";
+import Footer from "../components/Footer";
 
 const TripList = () => {
   const [loading, setLoading] = useState(true);
@@ -53,6 +54,7 @@ const TripList = () => {
           />
         ))}
       </div>
+      <Footer/>
     </>
   );
 };

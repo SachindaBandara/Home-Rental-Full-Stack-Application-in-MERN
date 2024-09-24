@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import ListingCard from "../components/ListingCard";
 import { setPropertyList } from "../redux/state";
 import Loader from "../components/Loader";
+import Footer from "../components/Footer";
 
 const PropertyList = () => {
   const [loading, setLoading] = useState(true);
@@ -68,6 +69,7 @@ const PropertyList = () => {
           )
         )}
       </div>
+      <Footer/>
     </>
   );
 };

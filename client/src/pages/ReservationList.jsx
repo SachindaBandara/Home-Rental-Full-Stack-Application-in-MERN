@@ -3,6 +3,7 @@ import "../styles/List.scss";
 import Navbar from "../components/Navbar";
 import { useSelector } from "react-redux";
 import { setReservationList } from "../redux/state";
+import Footer from "../components/Footer";
 
 const ReservationList = () => {
   const [loading, setLoading] = useState(true);
@@ -62,6 +63,7 @@ const ReservationList = () => {
           )
         )}
       </div>
+      <Footer/>
     </>
   );
 };

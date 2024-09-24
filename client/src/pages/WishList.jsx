@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import ListingCard from "../components/ListingCard";
 
 const WishList = () => {
+    const wishList = useSelector((state) => state.user.wishList)
   return (
     <>
       <Navbar />

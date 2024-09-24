@@ -1,16 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/List.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../components/Navbar";
 import ListingCard from "../components/ListingCard";
+import { setPropertyList } from "../redux/state";
+import Loader from "../components/Loader";
 
 const PropertyList = () => {
-  return (
+  const [loading, setLoading] = useState(true);
+  const user = useSelector((state = state.user));
+  const propertyList = user?.propertyList;
+
+  const dispatch = useDispatch();
+
+  const getPropertyList = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/users/${user._id}/propertiies`,
+        {
+          method: "GET",
+        }
+      );
+      const data = await response.json();
+      dispatch(setPropertyList(data));
+      setLoading(false);
+    } catch (err) {
+      console.log("Fetch all properties", err.message);
+    }
+  };
+
+  useEffect(() => {
+    getPropertyList();
+  }, []);
+
+  return loading ? (
+    <Loader />
+  ) : (
     <>
       <Navbar />
-      <h1 className="title-list">Yuor Wish List</h1>
+      <h1 className="title-list">Yuor Property List</h1>
       <div className="list">
-        {WishList?.map(
+        {propertyList?.map(
           ({
             _id,
             creator,

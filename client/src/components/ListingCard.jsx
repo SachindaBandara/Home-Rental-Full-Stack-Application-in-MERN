@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "../styles/ListingCard.scss";
 import { ArrowBackIosNew, ArrowForwardIos } from "@mui/icons-material";
+import { useSelector, useDispatch } from "react-redux";
+import { setWishList } from "../redux/state";
 
 const ListingCard = ({
   listingId,
@@ -32,6 +34,7 @@ const ListingCard = ({
   };
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // add wish list
   const user = useSelector((state) => state.user);
@@ -51,6 +54,7 @@ const ListingCard = ({
     );
 
     const data = await response.json();
+    dispatch(setWishList(data));
   };
 
   return (

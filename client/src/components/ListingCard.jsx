@@ -10,19 +10,19 @@ import { setWishList } from "../redux/state";
 import { useNavigate } from "react-router-dom"; // Importing useNavigate for navigation
 
 const ListingCard = ({
-  listingId,         // ID of the listing
-  creator,           // Creator of the listing
+  listingId, // ID of the listing
+  creator, // Creator of the listing
   listingPhotoPaths, // Array of image paths for the listing
-  city,              // City where the listing is located
-  province,          // Province of the listing
-  country,           // Country of the listing
-  category,          // Category of the listing (e.g., Apartment, House)
-  type,              // Type of the listing (e.g., Entire home, Private room)
-  price,             // Price of the listing per night
-  startDate,         // Start date of a booking (if applicable)
-  endDate,           // End date of a booking (if applicable)
-  totalPrice,        // Total price of a booking (if applicable)
-  booking,           // Boolean indicating whether this is a booking or not
+  city, // City where the listing is located
+  province, // Province of the listing
+  country, // Country of the listing
+  category, // Category of the listing (e.g., Apartment, House)
+  type, // Type of the listing (e.g., Entire home, Private room)
+  price, // Price of the listing per night
+  startDate, // Start date of a booking (if applicable)
+  endDate, // End date of a booking (if applicable)
+  totalPrice, // Total price of a booking (if applicable)
+  booking, // Boolean indicating whether this is a booking or not
 }) => {
   // State to keep track of the current index for the image slider
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -45,7 +45,7 @@ const ListingCard = ({
 
   // Fetching the current user from the Redux store
   const user = useSelector((state) => state.user);
-  
+
   // Fetching the user's wish list (favorites), if available
   const wishList = user?.wishList || [];
 
@@ -102,7 +102,8 @@ const ListingCard = ({
             gotoPrevSlide(e); // Go to previous image
           }}
         >
-          <ArrowBackIosNew sx={{ fontSize: "15px" }} /> {/* Icon for previous */}
+          <ArrowBackIosNew sx={{ fontSize: "15px" }} />{" "}
+          {/* Icon for previous */}
         </div>
 
         {/* Button to go to the next slide */}
@@ -121,12 +122,16 @@ const ListingCard = ({
       <h3>
         {city}, {province}, {country} {/* Location of the listing */}
       </h3>
-      <p>{category} {/* Category of the listing */}</p>
+      <p>
+        {category} {/* Category of the listing */}
+      </p>
 
       {/* Conditional rendering: if not a booking, display type and price per night */}
       {!booking ? (
         <>
-          <p>{type} {/* Type of the listing */}</p>
+          <p>
+            {type} {/* Type of the listing */}
+          </p>
           <p>
             <span>$ {price}</span> per night {/* Price per night */}
           </p>
@@ -138,7 +143,8 @@ const ListingCard = ({
             {startDate} - {endDate} {/* Booking date range */}
           </p>
           <p>
-            <span>$ {totalPrice}</span> total {/* Total price for the booking */}
+            <span>$ {totalPrice}</span> total{" "}
+            {/* Total price for the booking */}
           </p>
         </>
       )}

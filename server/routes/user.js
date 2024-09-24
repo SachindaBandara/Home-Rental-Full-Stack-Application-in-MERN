@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Booking = require("../models/Booking");
 
-// Get trip list
+// Get trip list API
 router.get("/:userId/trips", async (req, res) => {
   try {
     const { userId } = req.params;
@@ -15,7 +15,7 @@ router.get("/:userId/trips", async (req, res) => {
   }
 });
 
-// Add wish List
+// Add wish List API
 router.patch("/:userId/:listingId", async (req, res) => {
   try {
     const { userId, listingId } = req.params;
@@ -48,7 +48,7 @@ router.patch("/:userId/:listingId", async (req, res) => {
   }
 });
 
-// Get property list
+// Get property list API
 router.get("/:userId/properties", async (req, res) => {
   try {
     const { userId } = req.params;
@@ -58,9 +58,26 @@ router.get("/:userId/properties", async (req, res) => {
     res.status(202).json(trip);
   } catch (err) {
     console.log(err);
-    res.status(404).json({ message: "Can not find properties", error: err.message });
+    res
+      .status(404)
+      .json({ message: "Can not find properties", error: err.message });
   }
 });
 
+// Get reservaion list API
+router.get("/:userId/reservaions", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const reservaions = await Booking.find({ hostId: userId }).populate(
+      "customerId hostId listingId"
+    );
+    res.status(202).json(reservaions);
+  } catch (err) {
+    console.log(err);
+    res
+      .status(404)
+      .json({ message: "Can not find reservaions", error: err.message });
+  }
+});
 
 module.exports = router;

@@ -64,4 +64,7 @@ To set up the project locally, follow these steps:
   
 
 ##
-## 😊Happy Coding!💻
+<div align="center">
+  <h2>😊Happy Coding!💻</h2>
+</div>
+

@@ -52,7 +52,7 @@ To set up the project locally, follow these steps:
     npm run dev
 
 ## Usage 🚀
-  1. Open your browser and navigate to `http://localhost:3000`.
+  1. Open your browser and navigate to `http://localhost:5173`.
   
   2. Register/Login to the application.
   

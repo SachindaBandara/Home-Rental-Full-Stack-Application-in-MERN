@@ -3,6 +3,7 @@
 ## Overview
 This project is a full-stack web application designed to facilitate home rental services. It offers features such as user registration and login, property listings, categorization, search functionality, reservation management, and a wish list.
 
+
 ## Tech Stack
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
